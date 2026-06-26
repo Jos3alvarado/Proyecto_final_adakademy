@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    /* Base palette: Calming and clean neutrals */
+    --bg-main: #f8fafc;                /* Gris pizarra muy suave y claro (calma) */
+    --bg-card: #ffffff;                /* Blanco puro para tarjetas e interfaces claras */
+    --border-light: #e2e8f0;           /* Borde gris muy suave para delimitar bloques */
+    
+    /* Trust & Action Colors (Fintech 2026) */
+    --trust-navy: #0f172a;             /* Azul marino profundo (seguridad y profesionalidad) */
+    --trust-slate: #334155;            /* Gris pizarra oscuro para textos principales */
+    --electric-blue: #2563eb;          /* Azul eléctrico (acción y tecnología) */
+    --electric-hover: #1d4ed8;         /* Azul eléctrico oscuro para hovers */
+    --violet-accent: #6366f1;          /* Violeta suave para acentos secundarios */
+    
+    /* Strategic Color Coding (Emotional Balance) */
+    --paid-green: #10b981;             /* Verde esmeralda para estados pagados / a favor */
+    --paid-green-bg: #ecfdf5;          /* Fondo verde traslúcido relajante */
+    --paid-green-border: #a7f3d0;      
+    
+    --alert-orange: #f97316;           /* Naranja suave para alertas moderadas */
+    --alert-orange-bg: #fff7ed;
+    
+    --alert-red: #ef4444;              /* Rojo suave para deudas urgentes o borrado */
+    --alert-red-bg: #fef2f2;
+    --alert-red-border: #fca5a5;
+
+    /* Shadows & Elevations */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--trust-slate);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    letter-spacing: -0.2px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Headings & Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    color: var(--trust-navy);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Fintech Premium Cards (Minimalist & consistent) */
+.fintech-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 24px;
+    transition: all 0.25s ease;
+}
+
+.fintech-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(37, 99, 235, 0.15);
+}
+
+/* Premium Navbar - Floating & Clean */
+.navbar-fintech {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 0 !important;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--trust-navy) !important;
+    letter-spacing: -0.8px;
+}
+
+.navbar-brand span {
+    color: var(--electric-blue);
+}
+
+.nav-link-fintech {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--trust-slate) !important;
+    transition: color 0.15s ease;
+    padding: 8px 16px !important;
+}
+
+.nav-link-fintech:hover, .nav-link-fintech.active {
+    color: var(--electric-blue) !important;
+}
+
+/* Metric Widgets (Numbers are highly visible) */
+.metric-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--trust-navy);
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.metric-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Custom rounded buttons */
+.btn-fintech-primary {
+    background-color: var(--electric-blue);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-fintech-primary:hover {
+    background-color: var(--electric-hover);
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+    color: #ffffff;
+}
+
+.btn-fintech-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--trust-slate);
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-fintech-outline:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--trust-navy);
+}
+
+.btn-fintech-danger {
+    background-color: var(--alert-red);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
+    transition: all 0.2s ease;
+}
+
+.btn-fintech-danger:hover {
+    background-color: #dc2626;
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.25);
+    transform: translateY(-1px);
+    color: #ffffff;
+}
+
+/* Beautiful form fields */
+.form-fintech-label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--trust-navy);
+    margin-bottom: 6px;
+}
+
+.form-fintech-input {
+    background-color: #f8fafc !important;
+    border: 1px solid var(--border-light) !important;
+    color: var(--trust-navy) !important;
+    font-size: 1rem !important;
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.form-fintech-input:focus {
+    background-color: #ffffff !important;
+    border-color: var(--electric-blue) !important;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
+    outline: none !important;
+}
+
+.form-fintech-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Badges for status */
+.badge-fintech-green {
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    background-color: var(--paid-green-bg);
+    color: var(--paid-green);
+    border: 1px solid var(--paid-green-border);
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.badge-fintech-blue {
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    background-color: #eff6ff;
+    color: var(--electric-blue);
+    border: 1px solid #bfdbfe;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.badge-fintech-orange {
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    background-color: var(--alert-orange-bg);
+    color: var(--alert-orange);
+    border: 1px solid #fed7aa;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+/* Custom progress bars */
+.fintech-progress-track {
+    background-color: #f1f5f9;
+    border-radius: 9999px;
+    height: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.fintech-progress-bar {
+    background-color: var(--electric-blue);
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.6s ease;
+}
+
+.fintech-progress-bar-green {
+    background-color: var(--paid-green);
+}
+
+/* Custom Financial Alerts */
+.alert-fintech {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    color: var(--trust-slate);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 20px !important;
+}
+
+.alert-fintech-success {
+    border-left: 4px solid var(--paid-green) !important;
+    background-color: var(--paid-green-bg);
+}
+
+.alert-fintech-danger {
+    border-left: 4px solid var(--alert-red) !important;
+    background-color: var(--alert-red-bg);
+}
+
+.alert-fintech-warning {
+    border-left: 4px solid var(--alert-orange) !important;
+    background-color: var(--alert-orange-bg);
+}
+
+/* Custom Search Box style */
+.search-fintech-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 6px 6px 6px 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Layout modifications */
+main {
+    flex-grow: 1;
+}
+
+footer {
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-light);
+    color: #64748b;
+    font-size: 0.92rem;
+}

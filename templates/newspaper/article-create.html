@@ -1,0 +1,97 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Registrar Cobro - Cuentas Claras{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+        <div class="fintech-card p-4 p-md-5">
+            
+            <div class="text-center mb-5 border-bottom pb-4" style="border-color: #f1f5f9 !important;">
+                <span class="fs-1 d-block mb-2">📝</span>
+                <h2 class="fw-bold mb-1" style="color: var(--trust-navy); letter-spacing: -0.5px;">Registrar Cobro</h2>
+                <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">
+                    Declara de forma amigable e inteligente una cuenta compartida o deuda universitaria.
+                </p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-fintech alert-fintech-danger mb-4 border-0">
+                        <strong style="color: var(--alert-red);">Error de validación:</strong>
+                        <ul class="mb-0 mt-1" style="font-size: 0.92rem; font-weight: 500;">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Title Input -->
+                <div class="mb-4">
+                    <label for="id_title" class="form-fintech-label">A quién y qué se debe // Deudor e Ítem</label>
+                    <input type="text" name="title" required id="id_title" 
+                           class="form-control form-fintech-input" 
+                           placeholder="Ej: 'Carlos me debe 1 Malta y 1 Empanada'">
+                    <div class="text-muted small mt-2" style="font-size: 0.85rem;">
+                        Especifica de forma directa el nombre del deudor y lo prestado.
+                    </div>
+                    {% if form.title.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.title.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Content Input -->
+                <div class="mb-4">
+                    <label for="id_content" class="form-fintech-label">El chisme / contexto completo de la cuenta</label>
+                    <textarea name="content" required id="id_content" rows="5" 
+                              class="form-control form-fintech-input" 
+                              placeholder="Ej: 'Dijo que me la pagaba al salir de clases de Algoritmos, pero se fue corriendo y fingió no oír mi silbido...'"></textarea>
+                    <div class="text-muted small mt-2" style="font-size: 0.85rem;">
+                        Describe cómo sucedió la transacción. El humor reduce el estrés de cobrar.
+                    </div>
+                    {% if form.content.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.content.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Image Input -->
+                <div class="mb-5">
+                    <label for="id_image" class="form-fintech-label">Evidencia física de la transacción (Opcional)</label>
+                    <input type="file" name="image" id="id_image" accept="image/*"
+                           class="form-control form-fintech-input">
+                    <div class="text-muted small mt-2" style="font-size: 0.85rem;">
+                        Puedes adjuntar una captura de pantalla del chat, foto de la cafetería o un meme gracioso.
+                    </div>
+                    {% if form.image.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.image.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Action Button Grids -->
+                <div class="row g-3">
+                    <div class="col-md-6 order-md-2">
+                        <button type="submit" class="btn btn-fintech-primary w-100 py-3 fw-bold">
+                            Publicar Registro
+                        </button>
+                    </div>
+                    <div class="col-md-6 order-md-1">
+                        <a href="{% url 'article-list' %}" class="btn btn-fintech-outline w-100 py-3 text-center text-decoration-none d-block">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

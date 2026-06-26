@@ -1,0 +1,68 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Crear Cuenta - Cuentas Claras{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="col-md-6 col-lg-5">
+        <div class="fintech-card p-4 p-md-5">
+            
+            <div class="text-center mb-4 border-bottom pb-3" style="border-color: #f1f5f9 !important;">
+                <h3 class="fw-bold mb-1" style="color: var(--trust-navy); letter-spacing: -0.5px;">Registro de Acreedor</h3>
+                <p class="text-muted small mt-2 mb-0">
+                    Crea tu cuenta de finanzas compartidas y empieza a registrar cobros con total calma.
+                </p>
+            </div>
+            
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-fintech alert-fintech-danger mb-3 border-0">
+                        <strong style="color: var(--alert-red);">Error:</strong>
+                        <ul class="mb-0 mt-1" style="font-size: 0.9rem; font-weight: 500;">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="form-fintech-label">
+                            {{ field.label }}
+                        </label>
+                        <input type="{% if 'password' in field.name %}password{% else %}text{% endif %}" 
+                               name="{{ field.html_name }}" 
+                               id="{{ field.id_for_label }}" 
+                               class="form-control form-fintech-input" 
+                               placeholder="{% if 'username' in field.name %}Ej: Jose{% else %}••••••••{% endif %}"
+                               required>
+                        {% if field.help_text %}
+                            <div class="text-muted small mt-1" style="font-size: 0.8rem; line-height: 1.4;">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in field.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-fintech-primary w-100 py-3 fw-bold mt-2 mb-3">Registrarse</button>
+            </form>
+
+            <div class="text-center mt-4 pt-3 border-top" style="border-color: #f1f5f9 !important;">
+                <p class="text-muted small mb-0">¿Ya tienes una cuenta registrada? 
+                    <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: var(--electric-blue);">Inicia Sesión aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

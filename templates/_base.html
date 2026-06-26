@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cobradera Hub - Erradicando la Amnesia Financiera{% endblock %}</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Cyberpunk/Wanted Board CSS -->
+    <style>
+        :root {
+            --bg-deep: #0b0c10;
+            --bg-card: #1f2833;
+            --text-light: #c5a059; /* Gold accent */
+            --text-white: #f5f6f8;
+            --text-gray: #8b949e;
+            --neon-gold: #f39c12;
+            --neon-green: #00ff66;
+            --neon-cyan: #4facfe;
+            --neon-red: #ff3366;
+            --glass-bg: rgba(31, 40, 51, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background glow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(243, 156, 18, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 102, 0.04) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism containers */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s ease;
+        }
+
+        /* Glowing titles */
+        .glow-text-gold {
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
+        }
+        .glow-text-green {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+        }
+        .glow-text-cyan {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+        }
+
+        /* Navbar Custom Styles */
+        .navbar-custom {
+            background: rgba(11, 12, 16, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease;
+        }
+        .navbar-brand:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        /* Interactive Cards */
+        .wanted-card {
+            border: 1px solid var(--glass-border);
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .wanted-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-gold), var(--neon-red));
+            opacity: 0.8;
+        }
+
+        .wanted-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(243, 156, 18, 0.15);
+            border-color: rgba(243, 156, 18, 0.4);
+        }
+
+        .wanted-card-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-gray);
+        }
+
+        /* Sleek forms */
+        .form-control, .form-select {
+            background-color: rgba(11, 12, 16, 0.6);
+            border: 1px solid var(--glass-border);
+            color: var(--text-white);
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(11, 12, 16, 0.8);
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.2);
+            color: var(--text-white);
+        }
+
+        /* Buttons with gradients */
+        .btn-gold {
+            background: linear-gradient(135deg, var(--neon-gold) 0%, #e67e22 100%);
+            border: none;
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e67e22 0%, var(--neon-gold) 100%);
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.4);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .btn-cyan-outline {
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            background: transparent;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-cyan-outline:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Layout structure */
+        main {
+            flex-grow: 1;
+        }
+
+        footer {
+            background-color: rgba(11, 12, 16, 0.95);
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Beautiful Responsive Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand text-white" href="{% url 'article-list' %}">
+                🎯💰 <span class="glow-text-gold">Cobradera</span>Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'article-list' %}">📁 El Tablón</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'article-create' %}">➕ Registrar Deuda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'about' %}">🧐 Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'contact' %}">📧 Denuncias</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <span class="text-white me-3 d-none d-md-inline">
+                            Acreedor: <strong class="glow-text-green">{{ user.username }}</strong> 💸
+                        </span>
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_csrf_token %}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm px-3 py-1 rounded-pill">Cerrar Sesión</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-cyan-outline btn-sm px-3 py-1 rounded-pill me-2">Iniciar Sesión</a>
+                        <a href="{% url 'register' %}" class="btn btn-gold btn-sm px-3 py-1 rounded-pill">Registrarse</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container my-5">
+        <!-- Success and Error Messages with glows -->
+        {% if messages %}
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-8">
+                    {% for message in messages %}
+                        <div class="alert alert-dismissible fade show glass-card border-0 mb-2 py-3 px-4 text-white" 
+                             style="border-left: 4px solid {% if message.tags == 'success' %}var(--neon-green){% elif message.tags == 'error' %}var(--neon-red){% else %}var(--neon-gold){% endif %} !important; box-shadow: 0 0 15px rgba(255,255,255,0.05);" role="alert">
+                            <div class="d-flex align-items-center">
+                                <span class="fs-4 me-2">
+                                    {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+                                </span>
+                                <div>{{ message }}</div>
+                            </div>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="py-4 mt-auto">
+        <div class="container text-center">
+            <p class="mb-1 text-white-50">🎯 Cobradera Hub &copy; 2026 - Erradicando la Amnesia Financiera Estudiantil 💳</p>
+            <small class="text-muted">Diseñado con amor y humor para evitar que se coman tu malta sin pagar.</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
