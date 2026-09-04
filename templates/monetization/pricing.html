@@ -1,0 +1,44 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Planes Premium - Cuentas Claras{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <div class="text-center mb-12 animate-fade-in-up">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4" style="color: var(--text-primary); letter-spacing: -1px;">Desbloquea el Poder Pro</h1>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+            Publicaciones ilimitadas, acceso a contenido premium y soporte prioritario.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {% for plan in plans %}
+        <div class="pricing-card {% if forloop.first %}featured{% endif %} animate-fade-in-up delay-{{ forloop.counter }}">
+            <div class="mb-6">
+                {% if forloop.first %}
+                    <span class="badge-glass badge-violet mb-3 inline-flex">⭐ Más Popular</span>
+                {% endif %}
+                <h2 class="text-2xl font-bold mb-1" style="color: var(--text-primary);">{{ plan.name }}</h2>
+                <div class="price-tag mt-2" style="color: var(--accent-blue);">{{ plan.price }}</div>
+            </div>
+
+            <ul class="space-y-3 mb-8">
+                {% for feature in plan.features %}
+                <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                    <span style="color: var(--accent-green);">✓</span> {{ feature }}
+                </li>
+                {% endfor %}
+            </ul>
+
+            <a href="{% url 'create-checkout-session' plan.id %}" class="btn-glow w-full text-center block py-3">
+                Suscribirme
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <p class="text-center text-sm mt-8" style="color: var(--text-muted);">
+        Pago seguro procesado por Stripe. Cancelas cuando quieras.
+    </p>
+</div>
+{% endblock %}

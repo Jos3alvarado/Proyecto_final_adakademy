@@ -1,174 +1,161 @@
 {% extends "newspaper/_base.html" %}
 
-{% block title %}Tablón de Finanzas Personales - Cuentas Claras{% endblock %}
+{% block title %}Tablón - Cuentas Claras{% endblock %}
 
 {% block content %}
-<!-- Top Header & Metrics Panel (Numbers are highly visible and reassuring) -->
-<div class="row g-4 mb-5">
-    
-    <!-- Metric 1: Total Debts -->
-    <div class="col-md-4">
-        <div class="fintech-card d-flex flex-column justify-content-between h-100">
-            <div>
-                <span class="metric-label">Cobros Pendientes</span>
-                <div class="metric-value mt-2">{{ active_count }}</div>
+<div class="space-y-8">
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="stat-card stat-card-fire animate-fade-in-up delay-1">
+            <div class="stat-label">Cobros Pendientes</div>
+            <div class="stat-number" style="color: var(--accent-orange);">{{ active_count }}</div>
+            <p class="text-sm mt-2" style="color: var(--text-muted);">Deudas activas esperando cobro</p>
+        </div>
+
+        <div class="stat-card stat-card-blue animate-fade-in-up delay-2">
+            <div class="stat-label">Salud del Tablón</div>
+            <div class="flex items-end gap-3">
+                <div class="stat-number" style="color: var(--accent-blue);">{{ health_percentage }}%</div>
+                <span class="badge-glass {% if health_percentage >= 80 %}badge-green{% elif health_percentage >= 50 %}badge-blue{% else %}badge-orange{% endif %} mb-2">
+                    {% if health_percentage >= 80 %}Excelente{% elif health_percentage >= 50 %}Estable{% else %}Atención{% endif %}
+                </span>
             </div>
-            <p class="text-muted small mb-0 mt-3">Cuentas activas esperando pago o conciliación amistosa.</p>
+            <div class="progress-track mt-4">
+                <div class="progress-fill {% if health_percentage >= 50 %}progress-fill-green{% endif %}" style="width: {{ health_percentage }}%"></div>
+            </div>
+            <div class="flex justify-between mt-2 text-xs" style="color: var(--text-muted);">
+                <span>{{ paid_count }} saldadas</span>
+                <span>Meta 100%</span>
+            </div>
+        </div>
+
+        <div class="stat-card animate-fade-in-up delay-3" style="border-color: rgba(99, 102, 241, 0.2);">
+            <div class="stat-label">Nueva Publicación</div>
+            <h3 class="text-xl font-bold mt-2" style="color: var(--text-primary);">Comparte algo</h3>
+            <p class="text-sm mt-1" style="color: var(--text-muted);">Un chisme, una cuenta o una deuda seria.</p>
+            <a href="{% url 'article-create' %}" class="btn-glow btn-sm mt-4 inline-block">+ Crear</a>
         </div>
     </div>
 
-    <!-- Metric 2: Financial Health & Progress Bar -->
-    <div class="col-md-4">
-        <div class="fintech-card d-flex flex-column justify-content-between h-100">
-            <div>
-                <span class="metric-label">Salud del Tablón</span>
-                <div class="d-flex align-items-baseline mt-2">
-                    <span class="metric-value">{{ health_percentage }}%</span>
-                    <span class="{% if health_percentage >= 80 %}text-success{% elif health_percentage >= 50 %}text-primary{% else %}text-warning{% endif %} fw-bold ms-2" style="font-size: 0.95rem;">
-                        {% if health_percentage >= 80 %}↑ Excelente{% elif health_percentage >= 50 %}→ Estable{% else %}↓ Atención{% endif %}
-                    </span>
-                </div>
-            </div>
-            <div class="mt-3">
-                <div class="fintech-progress-track">
-                    <div class="fintech-progress-bar {% if health_percentage >= 80 %}fintech-progress-bar-green{% endif %}" 
-                         style="width: {{ health_percentage }}%;"></div>
-                </div>
-                <div class="d-flex justify-content-between text-muted small mt-2">
-                    <span>Efectividad: {{ paid_count }} saldadas de {{ active_count|add:paid_count }}</span>
-                    <span>Meta: 100%</span>
-                </div>
-            </div>
+    <!-- Type Tabs -->
+    <div class="tabs-glass inline-flex flex-wrap">
+        <a href="?type=gossip{% if q %}&q={{ q }}{% endif %}" class="tab-glass {% if current_type == 'gossip' or not current_type %}active{% endif %}">
+            🍿 Chismes <span class="tab-count">{{ gossip_count }}</span>
+        </a>
+        <a href="?type=pana_debt{% if q %}&q={{ q }}{% endif %}" class="tab-glass {% if current_type == 'pana_debt' %}active{% endif %}">
+            🤝 Cuentas entre Panas <span class="tab-count">{{ pana_count }}</span>
+        </a>
+        <a href="?type=serious_debt{% if q %}&q={{ q }}{% endif %}" class="tab-glass {% if current_type == 'serious_debt' %}active{% endif %}">
+            📄 Deudas Serias <span class="tab-count">{{ serious_count }}</span>
+        </a>
+    </div>
+
+    <!-- Category Filter -->
+    {% if categories %}
+    <div class="flex flex-wrap gap-2">
+        <a href="?type={{ current_type }}" class="badge-glass badge-blue {% if not current_category %}opacity-100{% else %}opacity-50{% endif %}" style="text-decoration:none;">Todas</a>
+        {% for cat in categories %}
+        <a href="?type={{ current_type }}&category={{ cat.slug }}" class="badge-glass badge-blue {% if current_category == cat.slug %}opacity-100{% else %}opacity-50{% endif %}" style="text-decoration:none;">
+            {{ cat.icon }} {{ cat.name }}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Header + Search -->
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+            <h2 class="text-2xl font-bold" style="color: var(--text-primary);">Historias y Cuentas</h2>
+            <p class="text-sm mt-1" style="color: var(--text-muted);">Todo lo que comparte la comunidad</p>
         </div>
-    </div>
-
-    <!-- Metric 3: Quick Action Centered Design -->
-    <div class="col-md-4">
-        <div class="fintech-card d-flex flex-column justify-content-center align-items-stretch h-100" style="background-color: #eff6ff; border-color: #bfdbfe;">
-            <div class="text-center mb-3">
-                <span class="fs-3">💸</span>
-                <h5 class="fw-bold mt-2 mb-1" style="color: var(--trust-navy);">¿Alguien olvidó pagar?</h5>
-                <p class="text-muted small mb-0">Registra un cobro amigablemente en segundos.</p>
-            </div>
-            <a href="{% url 'article-create' %}" class="btn btn-fintech-primary text-center text-decoration-none">
-                + Registrar Nueva Deuda
-            </a>
-        </div>
-    </div>
-
-</div>
-
-<!-- Search & Filtering Block (Clean & elegant) -->
-<div class="row mb-4 align-items-center justify-content-between">
-    <div class="col-md-7">
-        <h3 class="fw-bold mb-1" style="letter-spacing: -0.5px;">Tablón de Transacciones</h3>
-        <p class="text-muted mb-0">Lista detallada de deudas declaradas bajo un esquema de transparencia.</p>
-    </div>
-    
-    <!-- Quick Search Field -->
-    <div class="col-md-4 mt-3 mt-md-0">
-        <form method="get" class="search-fintech-box d-flex align-items-center">
-            <span class="text-muted me-2">🔍</span>
-            <input type="text" name="q" value="{{ q|default:'' }}" 
-                   class="form-control border-0 p-0 shadow-none bg-transparent" 
-                   placeholder="Buscar por nombre o palabra..." style="font-size: 0.95rem; color: var(--trust-navy);">
-            {% if status %}
-                <input type="hidden" name="status" value="{{ status }}">
-            {% endif %}
+        <form method="get" class="search-glass w-full md:w-80">
+            <span style="color: var(--text-muted);">🔍</span>
+            <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Buscar...">
+            {% if current_type %}<input type="hidden" name="type" value="{{ current_type }}">{% endif %}
+            {% if current_category %}<input type="hidden" name="category" value="{{ current_category }}">{% endif %}
             {% if q %}
-                <a href="?status={{ status|default:'active' }}" class="text-decoration-none text-muted me-2" style="font-size: 0.9rem;">✖</a>
+                <a href="?type={{ current_type }}" class="text-sm px-2 py-1 rounded-lg hover:bg-white/5" style="color: var(--text-muted);">✖</a>
             {% endif %}
         </form>
     </div>
-</div>
 
-<!-- Tabs Navigation (Minimalist Fintech design) -->
-<div class="d-flex border-bottom mb-4" style="border-color: var(--border-light) !important;">
-    <a href="?status=active{% if q %}&q={{ q }}{% endif %}" 
-       class="nav-link-fintech border-bottom pb-3 fw-bold text-decoration-none {% if status == 'active' or not status %}active border-primary{% endif %}" 
-       style="border-width: 3px !important; margin-bottom: -1px; {% if status == 'active' or not status %}border-bottom: 3px solid var(--electric-blue) !important; color: var(--electric-blue) !important;{% else %}border-color: transparent !important; color: #64748b !important;{% endif %}">
-        💸 Cuentas Activas <span class="badge bg-secondary ms-1 rounded-pill bg-opacity-10 text-secondary" style="font-size: 0.78rem;">{{ active_count }}</span>
-    </a>
-    <a href="?status=paid{% if q %}&q={{ q }}{% endif %}" 
-       class="nav-link-fintech border-bottom pb-3 fw-bold text-decoration-none ms-3 {% if status == 'paid' %}active border-primary{% endif %}" 
-       style="border-width: 3px !important; margin-bottom: -1px; {% if status == 'paid' %}border-bottom: 3px solid var(--paid-green) !important; color: var(--paid-green) !important;{% else %}border-color: transparent !important; color: #64748b !important;{% endif %}">
-        🕊️ Historial de Pagadas <span class="badge bg-success ms-1 rounded-pill bg-opacity-10 text-success" style="font-size: 0.78rem;">{{ paid_count }}</span>
-    </a>
-</div>
-
-{% if articles %}
-    <!-- Debts Grid -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for article in articles %}
-            <div class="col">
-                <div class="fintech-card h-100 d-flex flex-column justify-content-between" {% if article.is_paid %}style="border-color: var(--paid-green-border); background-color: var(--paid-green-bg);"{% endif %}>
-                    <div>
-                        <!-- Header badge info -->
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            {% if article.is_paid %}
-                                <span class="badge-fintech-green">✔️ Saldada</span>
-                            {% else %}
-                                <span class="badge-fintech-blue">Acreedor: {{ article.author.username }}</span>
-                            {% endif %}
-                            <span class="text-muted small">{{ article.created_at|date:"d M, Y" }}</span>
-                        </div>
-
-                        <!-- Debtor Title -->
-                        <h5 class="fw-bold mb-3" style="color: var(--trust-navy); font-size: 1.15rem;">
-                            {{ article.title }}
-                        </h5>
-
-                        <!-- Description content snippet -->
-                        <p class="text-muted mb-4" style="font-size: 0.95rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            {{ article.content }}
-                        </p>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: {% if article.is_paid %}#d1fae5{% else %}#f1f5f9{% endif %} !important;">
-                        {% if article.is_paid %}
-                            <span class="text-muted small" style="font-size: 0.85rem;">Por: {{ article.author.username }}</span>
-                        {% else %}
-                            {% if article.image %}
-                                <span class="text-success small fw-semibold" style="font-size: 0.85rem;">📸 Evidencia física</span>
-                            {% else %}
-                                <span class="text-muted small" style="font-size: 0.85rem;">🕊️ Por honor</span>
-                            {% endif %}
-                        {% endif %}
-                        <a href="{% url 'article-detail' article.id %}" class="btn {% if article.is_paid %}btn-success text-white py-2 px-3 fw-bold{% else %}btn-fintech-outline py-2 px-3 fw-bold{% endif %}" style="font-size: 0.85rem; border-radius: 8px; {% if article.is_paid %}background-color: var(--paid-green); border: none;{% endif %}">
-                            Ver Recibo
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <!-- Reassuring & Peaceful Empty State (Generates calm and zero anxiety) -->
-    <div class="row justify-content-center py-5">
-        <div class="col-md-6 text-center">
-            <div class="fintech-card p-5" style="border-style: dashed; border-width: 2px;">
-                {% if status == 'paid' %}
-                    <span class="display-3 d-block mb-3">💼</span>
-                    <h4 class="fw-bold mb-2" style="color: var(--trust-navy);">Historial Limpio</h4>
-                    <p class="text-muted px-4 mb-4" style="font-size: 1rem; line-height: 1.6;">
-                        Aún no tienes deudas archivadas como pagadas. Cuando cobres o saldes una deuda activa, se guardará un hermoso recibo histórico aquí.
-                    </p>
-                    <a href="?status=active" class="btn btn-fintech-outline">
-                        Ver Cuentas Activas
-                    </a>
-                {% else %}
-                    <span class="display-3 d-block mb-3">🕊️</span>
-                    <h4 class="fw-bold mb-2" style="color: var(--trust-navy);">Todo en Calma</h4>
-                    <p class="text-muted px-4 mb-4" style="font-size: 1rem; line-height: 1.6;">
-                        El escáner del tablón está libre de deudas activas. Todo el mundo está al día con sus cuentas o tus filtros no arrojaron resultados. ¡Respira hondo y disfruta del balance!
-                    </p>
-                    <a href="{% url 'article-create' %}" class="btn btn-fintech-primary">
-                        + Registrar Cobro Amistoso
-                    </a>
-                {% endif %}
+    <!-- Ad strip (comodo, no intrusivo) -->
+    <div class="glass-card-static flex items-center justify-between gap-4 py-4 px-6 animate-fade-in-up" style="border-color: rgba(99,102,241,0.15);">
+        <div class="flex items-center gap-4">
+            <span class="text-3xl">📣</span>
+            <div>
+                <p class="text-sm font-bold" style="color: var(--text-primary);">Patrocinado</p>
+                <p class="text-xs" style="color: var(--text-muted);">Tu marca aquí. Publicidad discreta y cómoda junto a las historias.</p>
             </div>
         </div>
+        <a href="#" class="btn-glass btn-sm text-xs whitespace-nowrap">Anunciarte</a>
     </div>
-{% endif %}
+
+    <!-- Content Grid -->
+    {% if articles %}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {% for article in articles %}
+        <div class="debt-card {% if article.is_paid %}paid{% endif %} animate-fade-in-up" style="animation-delay: {{ forloop.counter0|add:1 }}00ms; opacity: 0;">
+            <div class="flex items-start justify-between gap-2 mb-3">
+                <span class="badge-glass {% if article.is_gossip %}badge-violet{% elif article.is_debt %}badge-orange{% endif %}">
+                    {% if article.is_gossip %}🍿 Chisme{% elif article.post_type == 'pana_debt' %}🤝 Cuenta{% else %}📄 Deuda{% endif %}
+                </span>
+                <span class="text-xs" style="color: var(--text-muted);">{{ article.created_at|date:"d M, Y" }}</span>
+            </div>
+
+            <h3 class="text-lg font-bold mb-2" style="color: var(--text-primary);">{{ article.title }}</h3>
+            <p class="text-sm line-clamp-3 mb-4" style="color: var(--text-secondary);">{{ article.content }}</p>
+
+            {% if article.is_debt %}
+            <div class="flex items-center gap-2 mb-3">
+                <span class="badge-glass {% if article.debt_status == 'paid' %}badge-green{% elif article.debt_status == 'overdue' %}badge-red{% else %}badge-orange{% endif %}">
+                    {{ article.get_debt_status_display }}
+                </span>
+                {% if article.get_total_debt > 0 %}
+                <span class="text-sm font-bold" style="color: var(--accent-green);">${{ article.get_total_debt }}</span>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="flex items-center justify-between mt-auto pt-4" style="border-top: 1px solid var(--glass-border);">
+                <span class="text-xs" style="color: var(--text-muted);">
+                    {% if article.is_gossip %}{{ article.get_gossip_display_name }}{% else %}Por: {{ article.author.username }}{% endif %}
+                    {% if article.image %} · 📸{% endif %}
+                </span>
+                <div class="flex items-center gap-2">
+                    <a href="https://wa.me/?text={{ article.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
+                       target="_blank" rel="noopener" class="btn-glass btn-sm text-xs" title="Compartir en WhatsApp"
+                       style="border-color: rgba(37,211,102,0.3);">
+                        <span style="color:#25D366;">&#128172;</span>
+                    </a>
+                    <a href="{% url 'article-detail' article.id %}" class="btn-glass btn-sm text-xs">Ver</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="flex justify-center gap-2 mt-8">
+        {% if page_obj.has_previous %}
+            <a href="?type={{ current_type }}&page={{ page_obj.previous_page_number }}" class="btn-glass btn-sm">← Anterior</a>
+        {% endif %}
+        <span class="btn-glass btn-sm" style="color: var(--text-muted);">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?type={{ current_type }}&page={{ page_obj.next_page_number }}" class="btn-glass btn-sm">Siguiente →</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="empty-state animate-fade-in">
+        <div class="text-5xl mb-4">🕊️</div>
+        <h3 class="text-xl font-bold mb-2">Aún no hay publicaciones aquí</h3>
+        <p class="mb-6" style="color: var(--text-muted);">Sé el primero en compartir una historia o registrar una cuenta.</p>
+        <a href="{% url 'article-create' %}" class="btn-glow">+ Crear Publicación</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

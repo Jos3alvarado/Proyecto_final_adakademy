@@ -1,0 +1,30 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Pago Exitoso - Cuentas Claras{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto py-12 animate-fade-in-up">
+    <div class="glass-card-static text-center">
+        <div class="text-6xl mb-4">🎉</div>
+        <h2 class="text-3xl font-bold mb-2" style="color: var(--accent-green);">¡Pago Exitoso!</h2>
+        <p class="mb-8" style="color: var(--text-secondary);">Bienvenido al plan Premium. Ya puedes disfrutar de todas las funciones.</p>
+
+        <div class="p-4 rounded-2xl mb-6 text-left" style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);">
+            <div class="flex justify-between mb-2">
+                <span class="text-sm" style="color: var(--text-muted);">Plan</span>
+                <span class="text-sm font-bold" style="color: var(--text-primary);">{{ plan.name|default:"Premium" }}</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span class="text-sm" style="color: var(--text-muted);">Precio</span>
+                <span class="text-sm font-bold" style="color: var(--text-primary);">{{ plan.display_price|default:"N/D" }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-sm" style="color: var(--text-muted);">Estado</span>
+                <span class="badge-glass badge-green">Activo</span>
+            </div>
+        </div>
+
+        <a href="{% url 'article-list' %}" class="btn-glow w-full text-center block py-3">Ir al Tablón</a>
+    </div>
+</div>
+{% endblock %}

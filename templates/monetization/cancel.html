@@ -1,0 +1,14 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Pago Cancelado - Cuentas Claras{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto py-12 animate-fade-in-up">
+    <div class="glass-card-static text-center">
+        <div class="text-6xl mb-4">😕</div>
+        <h2 class="text-3xl font-bold mb-2" style="color: var(--text-primary);">Pago Cancelado</h2>
+        <p class="mb-8" style="color: var(--text-secondary);">No se realizó ningún cargo. Puedes intentarlo de nuevo cuando quieras.</p>
+        <a href="{% url 'pricing' %}" class="btn-glow w-full text-center block py-3">Volver a Precios</a>
+    </div>
+</div>
+{% endblock %}

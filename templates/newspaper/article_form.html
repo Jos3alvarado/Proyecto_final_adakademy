@@ -1,0 +1,157 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Nueva Publicación - Cuentas Claras{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto animate-fade-in-up">
+    <div class="glass-card-static">
+        <div class="text-center mb-8">
+            <div class="text-5xl mb-3">📝</div>
+            <h2 class="text-3xl font-bold" style="color: var(--text-primary);">Crear Publicación</h2>
+            <p class="text-sm mt-2" style="color: var(--text-muted);">Comparte un chisme, registra una cuenta o una deuda seria</p>
+        </div>
+
+        <!-- Type selector -->
+        <div class="tabs-glass inline-flex w-full mb-8">
+            <button type="button" data-type="gossip" class="tab-glass active flex-1 justify-center" onclick="selectType('gossip')">🍿 Chisme</button>
+            <button type="button" data-type="pana_debt" class="tab-glass flex-1 justify-center" onclick="selectType('pana_debt')">🤝 Cuenta entre Panas</button>
+            <button type="button" data-type="serious_debt" class="tab-glass flex-1 justify-center" onclick="selectType('serious_debt')">📄 Deuda Serena</button>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="articleForm" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert-glass alert-glass-error mb-6">
+                <span>✖</span>
+                <div>
+                    <strong>Error:</strong>
+                    <ul class="mt-1 list-disc list-inside text-sm">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <input type="hidden" name="post_type" id="post_type" value="{{ selected_type }}">
+
+            <div class="space-y-5">
+
+                <!-- Gossip fields -->
+                <div id="gossipFields">
+                    <div class="mb-5">
+                        <label class="label-glass">Nivel de Chisme</label>
+                        <select name="gossip_level" id="id_gossip_level" class="input-glass">
+                            {% for value, label in form.gossip_level.field.choices %}
+                                <option value="{{ value }}" {% if form.gossip_level.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <label class="flex items-center gap-3 mb-5">
+                        <input type="checkbox" name="is_anonymous" id="id_is_anonymous" class="input-glass" style="width: auto;">
+                        <span class="text-sm" style="color: var(--text-secondary);">Publicar de forma anónima</span>
+                    </label>
+                </div>
+
+                <!-- Pana debt fields -->
+                <div id="panaFields" style="display:none;">
+                    <div class="mb-5">
+                        <label for="id_amount" class="label-glass">Monto ($)</label>
+                        <input type="number" step="0.01" name="amount" id="id_amount" class="input-glass" placeholder="0.00">
+                    </div>
+                    <div class="mb-5">
+                        <label for="id_agreed_payment_date" class="label-glass">Fecha acordada de pago</label>
+                        <input type="date" name="agreed_payment_date" id="id_agreed_payment_date" class="input-glass">
+                    </div>
+                    <div class="mb-5">
+                        <label for="id_debtor" class="label-glass">Deudor</label>
+                        <select name="debtor" id="id_debtor" class="input-glass">
+                            {% for u in users %}
+                                <option value="{{ u.id }}">{{ u.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Serious debt fields -->
+                <div id="seriousFields" style="display:none;">
+                    <div class="mb-5">
+                        <label for="id_exact_amount" class="label-glass">Monto exacto ($)</label>
+                        <input type="number" step="0.01" name="exact_amount" id="id_exact_amount" class="input-glass" placeholder="0.00">
+                    </div>
+                    <div class="mb-5">
+                        <label for="id_interest_rate" class="label-glass">Tasa de interés mensual (%)</label>
+                        <input type="number" step="0.01" name="interest_rate" id="id_interest_rate" class="input-glass" placeholder="5.00">
+                    </div>
+                    <div class="mb-5">
+                        <label for="id_due_date" class="label-glass">Fecha de vencimiento</label>
+                        <input type="date" name="due_date" id="id_due_date" class="input-glass">
+                    </div>
+                    <div class="mb-5">
+                        <label for="id_legal_status" class="label-glass">Estado legal</label>
+                        <select name="legal_status" id="id_legal_status" class="input-glass">
+                            {% for value, label in form.legal_status.field.choices %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="id_title" class="label-glass">Título</label>
+                    <input type="text" name="title" id="id_title" required class="input-glass" placeholder="Ej: Carlos me debe 1 Malta" value="{{ form.title.value|default:'' }}">
+                    {% if form.title.errors %}
+                        <p class="text-sm mt-1" style="color: var(--accent-red);">{{ form.title.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="id_content" class="label-glass">Contenido</label>
+                    <textarea name="content" id="id_content" rows="5" class="input-glass" style="min-height: 140px; resize: vertical;" placeholder="Cuenta la historia completa...">{{ form.content.value|default:'' }}</textarea>
+                    {% if form.content.errors %}
+                        <p class="text-sm mt-1" style="color: var(--accent-red);">{{ form.content.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="id_category" class="label-glass">Categoría</label>
+                    <select name="category" id="id_category" class="input-glass">
+                        <option value="">Sin categoría</option>
+                        {% for cat in form.category.field.queryset %}
+                            <option value="{{ cat.id }}">{{ cat.icon }} {{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="id_image" class="label-glass">Imagen / Evidencia (Opcional)</label>
+                    <input type="file" name="image" id="id_image" accept="image/*" class="input-glass" style="padding: 10px !important;">
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 mt-8 justify-end">
+                <a href="{% url 'article-list' %}" class="btn-glass text-center">Cancelar</a>
+                <button type="submit" class="btn-glow">Publicar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function selectType(type) {
+    document.getElementById('post_type').value = type;
+    document.querySelectorAll('.tab-glass[data-type]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.type === type);
+    });
+    document.getElementById('gossipFields').style.display = type === 'gossip' ? 'block' : 'none';
+    document.getElementById('panaFields').style.display = type === 'pana_debt' ? 'block' : 'none';
+    document.getElementById('seriousFields').style.display = type === 'serious_debt' ? 'block' : 'none';
+}
+
+selectType('{{ selected_type }}');
+</script>
+{% endblock %}

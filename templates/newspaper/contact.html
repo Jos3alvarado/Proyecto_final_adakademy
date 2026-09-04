@@ -1,58 +1,55 @@
 {% extends "newspaper/_base.html" %}
 
-{% block title %}Apoyo de Cobro - Cuentas Claras{% endblock %}
+{% block title %}Soporte - Cuentas Claras{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="fintech-card p-4 p-md-5">
-            
-            <div class="text-center mb-5 border-bottom pb-4" style="border-color: #f1f5f9 !important;">
-                <span class="display-3 d-block mb-2">📧</span>
-                <h1 class="fw-bold mb-1" style="color: var(--trust-navy); letter-spacing: -0.8px;">Solicitar Apoyo de Cobro</h1>
-                <p class="text-muted mt-2 mb-0" style="font-size: 1.05rem;">
-                    ¿El deudor te evade o se hace el olvidadizo? Te ayudamos a resolverlo de forma pacífica.
-                </p>
-            </div>
+<div class="max-w-2xl mx-auto animate-fade-in-up">
+    <div class="glass-card-static">
+        <div class="text-center mb-8">
+            <div class="text-5xl mb-3">&#128231;</div>
+            <h1 class="text-3xl font-bold" style="color: var(--text-primary);">Solicitar Apoyo de Cobro</h1>
+            <p class="text-sm mt-2" style="color: var(--text-muted);">El deudor te evade? Te ayudamos a resolverlo de forma pacifica.</p>
+        </div>
 
-            <div class="alert alert-fintech alert-fintech-success mb-4 border-0">
-                <strong style="color: var(--paid-green); font-weight: 700;">Apoyo Amigable:</strong>
-                <p class="mb-0 mt-1" style="font-size: 0.95rem; line-height: 1.5; font-weight: 500;">
-                    Este formulario simula el envío de indirectas amigables. Nuestro sistema de recordatorios automatizados se encargará de refrescarle la memoria al sospechoso en redes o clases comunes con total respeto y calma.
-                </p>
-            </div>
+        <div class="alert-glass alert-glass-success mb-6">
+            <span>&#128161;</span>
+            <p class="text-sm" style="color: var(--text-secondary);">
+                Este formulario simula el envio de indirectas amigables. Nuestro sistema de recordatorios automatizados le refrescara la memoria al sospechoso con total respeto.
+            </p>
+        </div>
 
-            <form method="post" onsubmit="event.preventDefault(); alert('¡Recordatorio despachado! Se ha enviado una indirecta amigable al deudor.');">
-                <div class="mb-4">
-                    <label for="debtor_name" class="form-fintech-label">Nombre de la persona // Deudor</label>
-                    <input type="text" id="debtor_name" required class="form-control form-fintech-input" placeholder="Ej: Carlos Pérez">
+        <form method="post" onsubmit="event.preventDefault(); alert('Recordatorio despachado! Se ha enviado una indirecta amigable al deudor.');">
+            <div class="space-y-5">
+                <div>
+                    <label for="debtor_name" class="label-glass">Nombre del deudor</label>
+                    <input type="text" id="debtor_name" required class="input-glass" placeholder="Ej: Carlos Perez">
                 </div>
 
-                <div class="mb-4">
-                    <label for="last_seen" class="form-fintech-label">Lugar de clases o pasillo común</label>
-                    <input type="text" id="last_seen" required class="form-control form-fintech-input" placeholder="Ej: Pasillo de Ingeniería / Cafetería Central">
+                <div>
+                    <label for="last_seen" class="label-glass">Lugar comun o pasillo</label>
+                    <input type="text" id="last_seen" required class="input-glass" placeholder="Ej: Pasillo de Ingenieria / Cafeteria Central">
                 </div>
 
-                <div class="mb-4">
-                    <label for="pressure_method" class="form-fintech-label">Método de recordatorio amigable sugerido</label>
-                    <select id="pressure_method" class="form-select form-fintech-input">
-                        <option value="crow">🐦 Recordatorio virtual cordial por chat estudiantil</option>
-                        <option value="meme">🖼️ Diseñar meme divertido e inofensivo de cobro en el grupo de WhatsApp</option>
-                        <option value="stare">👀 Saludo sonriente pero firme en la biblioteca</option>
-                        <option value="mom">👵 Notificar de manera respetuosa sobre el desayuno prestado</option>
+                <div>
+                    <label for="pressure_method" class="label-glass">Metodo de recordatorio</label>
+                    <select id="pressure_method" class="input-glass">
+                        <option value="crow">&#128036; Recordatorio virtual cordial por chat</option>
+                        <option value="meme">&#128444; Disenar meme divertido de cobro</option>
+                        <option value="stare">&#128064; Saludo sonriente pero firme</option>
+                        <option value="mom">&#128129; Notificar de manera respetuosa</option>
                     </select>
                 </div>
 
-                <div class="mb-5">
-                    <label for="details" class="form-fintech-label">Detalles del descuido u olvido</label>
-                    <textarea id="details" rows="4" class="form-control form-fintech-input" placeholder="Ej: 'Compró un café y olvidó pagarme lo de la empanada de ayer...'"></textarea>
+                <div>
+                    <label for="details" class="label-glass">Detalles del descuido</label>
+                    <textarea id="details" rows="4" class="input-glass" style="min-height: 120px; resize: vertical;" placeholder="Ej: Compro un cafe y olvido pagarme lo de la empanada de ayer..."></textarea>
                 </div>
+            </div>
 
-                <button type="submit" class="btn btn-fintech-primary w-100 py-3 fw-bold">
-                    Despachar Recordatorio Táctico 🚀
-                </button>
-            </form>
-        </div>
+            <button type="submit" class="btn-glow w-full mt-8 py-4 text-lg">
+                Despachar Recordatorio Tactico &#128640;
+            </button>
+        </form>
     </div>
 </div>
 {% endblock %}

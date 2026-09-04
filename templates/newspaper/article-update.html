@@ -1,106 +1,79 @@
 {% extends "newspaper/_base.html" %}
 
-{% block title %}Modificar Ficha de Cobro - Cuentas Claras{% endblock %}
+{% block title %}Editar Deuda - Cuentas Claras{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-9 col-lg-8">
-        <div class="fintech-card p-4 p-md-5">
-            
-            <div class="text-center mb-5 border-bottom pb-4" style="border-color: #f1f5f9 !important;">
-                <span class="fs-1 d-block mb-2">⚙️</span>
-                <h2 class="fw-bold mb-1" style="color: var(--trust-navy); letter-spacing: -0.5px;">Actualizar Registro</h2>
-                <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">
-                    Corrige montos, nombres, o actualiza los detalles de la evidencia cargada.
-                </p>
+<div class="max-w-2xl mx-auto animate-fade-in-up">
+    <div class="glass-card-static">
+        <div class="text-center mb-8">
+            <div class="text-5xl mb-3">&#9881;</div>
+            <h2 class="text-3xl font-bold" style="color: var(--text-primary);">Actualizar Registro</h2>
+            <p class="text-sm mt-2" style="color: var(--text-muted);">Corrige montos, nombres o detalles de la evidencia</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert-glass alert-glass-error mb-6">
+                <span>&#10007;</span>
+                <div>
+                    <strong>Error:</strong>
+                    <ul class="mt-1 list-disc list-inside text-sm">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="space-y-5">
+                <div>
+                    <label for="id_title" class="label-glass">A quien y que se debe</label>
+                    <input type="text" name="title" required id="id_title" class="input-glass" value="{{ form.title.value|default:'' }}">
+                    <p class="text-xs mt-1" style="color: var(--text-muted);">Nombre del deudor y lo prestado.</p>
+                    {% if form.title.errors %}
+                        <p class="text-sm mt-1" style="color: var(--accent-red);">{{ form.title.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="id_content" class="label-glass">El chisme / contexto</label>
+                    <textarea name="content" required id="id_content" rows="5" class="input-glass" style="min-height: 140px; resize: vertical;">{{ form.content.value|default:'' }}</textarea>
+                    <p class="text-xs mt-1" style="color: var(--text-muted);">Añade detalles para mantener la cuenta transparente.</p>
+                    {% if form.content.errors %}
+                        <p class="text-sm mt-1" style="color: var(--accent-red);">{{ form.content.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="id_image" class="label-glass">Actualizar evidencia</label>
+                    {% if object.image %}
+                    <div class="mb-4 p-4 rounded-2xl flex items-center justify-between" style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">&#128444;</span>
+                            <div>
+                                <p class="font-semibold text-sm" style="color: var(--text-primary);">Evidencia actual</p>
+                                <p class="text-xs" style="color: var(--text-muted);">Haz clic para revisar</p>
+                            </div>
+                        </div>
+                        <a href="{{ object.image.url }}" target="_blank" class="btn-glass btn-sm text-xs">Ver</a>
+                    </div>
+                    {% endif %}
+                    <input type="file" name="image" id="id_image" accept="image/*" class="input-glass" style="padding: 10px !important;">
+                    <p class="text-xs mt-1" style="color: var(--text-muted);">Sube una nueva foto para reemplazar la actual.</p>
+                    {% if form.image.errors %}
+                        <p class="text-sm mt-1" style="color: var(--accent-red);">{{ form.image.errors }}</p>
+                    {% endif %}
+                </div>
             </div>
 
-            <form method="post" enctype="multipart/form-data" novalidate>
-                {% csrf_token %}
-                
-                {% if form.non_field_errors %}
-                    <div class="alert alert-fintech alert-fintech-danger mb-4 border-0">
-                        <strong style="color: var(--alert-red);">Error de validación:</strong>
-                        <ul class="mb-0 mt-1" style="font-size: 0.92rem; font-weight: 500;">
-                            {% for error in form.non_field_errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-
-                <!-- Title Input -->
-                <div class="mb-4">
-                    <label for="id_title" class="form-fintech-label">A quién y qué se debe // Deudor e Ítem</label>
-                    <input type="text" name="title" required id="id_title" 
-                           class="form-control form-fintech-input" 
-                           value="{{ form.title.value|default:'' }}">
-                    <div class="text-muted small mt-2" style="font-size: 0.85rem;">
-                        Especifica de forma directa el nombre del deudor y lo prestado.
-                    </div>
-                    {% if form.title.errors %}
-                        <div class="text-danger small mt-1">
-                            {{ form.title.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-
-                <!-- Content Input -->
-                <div class="mb-4">
-                    <label for="id_content" class="form-fintech-label">El chisme / contexto completo de la cuenta</label>
-                    <textarea name="content" required id="id_content" rows="5" 
-                              class="form-control form-fintech-input">{{ form.content.value|default:'' }}</textarea>
-                    <div class="text-muted small mt-2" style="font-size: 0.85rem;">
-                        ¿Hay información nueva? Añade detalles para mantener la cuenta transparente.
-                    </div>
-                    {% if form.content.errors %}
-                        <div class="text-danger small mt-1">
-                            {{ form.content.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-
-                <!-- Image Input -->
-                <div class="mb-5">
-                    <label for="id_image" class="form-fintech-label">Actualizar evidencia física</label>
-                    
-                    {% if object.image %}
-                        <div class="mb-3 p-3 border rounded-3 d-flex align-items-center justify-content-between" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
-                            <div class="d-flex align-items-center">
-                                <span class="fs-4 me-2">🖼️</span>
-                                <span class="small fw-semibold text-secondary">Archivo de evidencia actual cargado</span>
-                            </div>
-                            <a href="{{ object.image.url }}" target="_blank" class="btn btn-fintech-outline py-1 px-3" style="font-size: 0.85rem; border-radius: 8px;">[Ver Actual]</a>
-                        </div>
-                    {% endif %}
-                    
-                    <input type="file" name="image" id="id_image" accept="image/*" class="form-control form-cyber-input form-fintech-input">
-                    <div class="text-muted small mt-2" style="font-size: 0.85rem;">
-                        Sube una nueva foto si deseas reemplazar la evidencia física actual.
-                    </div>
-                    {% if form.image.errors %}
-                        <div class="text-danger small mt-1">
-                            {{ form.image.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-
-                <!-- Action Button Grids -->
-                <div class="row g-3">
-                    <div class="col-md-6 order-md-2">
-                        <button type="submit" class="btn btn-fintech-primary w-100 py-3 fw-bold">
-                            Guardar Cambios
-                        </button>
-                    </div>
-                    <div class="col-md-6 order-md-1">
-                        <a href="{% url 'article-detail' object.id %}" class="btn btn-fintech-outline w-100 py-3 text-center text-decoration-none d-block">
-                            Cancelar
-                        </a>
-                    </div>
-                </div>
-            </form>
-
-        </div>
+            <div class="flex flex-col sm:flex-row gap-3 mt-8 justify-end">
+                <a href="{% url 'article-detail' object.id %}" class="btn-glass text-center">Cancelar</a>
+                <button type="submit" class="btn-glow">Guardar Cambios</button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cuentas-claras
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn myblog.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "*.onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.11.9"

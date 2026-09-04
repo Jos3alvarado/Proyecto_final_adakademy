@@ -1,83 +1,110 @@
-# Cuentas Claras 🎯💰 - Erradicando la Amnesia Financiera Estudiantil
+# Cuentas Claras 🎯 - Erradicando la Amnesia Financiera Estudiantil
 
-**Cuentas Claras** es una plataforma web desarrollada en **Django** diseñada para llevar un control divertido, transparente y sumamente visual de las deudas pequeñas entre compañeros de clase (como esa malta, empanada o fotocopia que prometieron pagarte "al salir de clases"). 
-
-Inspirada en una estética **Cyber-Neon / Fanvue**, la interfaz ofrece un diseño premium en modo oscuro con acentos magenta y ciano, bordes translúcidos y animaciones fluidas.
+**Cuentas Claras** es una plataforma web en **Django** para llevar un control divertido, transparente y visual de las deudas pequeñas entre compañeros de clase, amigos y colegas. Estética **dark premium / glassmorphism** moderna con monetización **Freemium + Stripe**.
 
 ---
 
-## ✨ Características Principales
+## ✨ Características
 
-*   📁 **El Tablón de los Buscados**: Un dashboard público responsivo en formato de tarjetas de cristal (glassmorphism) donde cualquier visitante puede ver las deudas pendientes de la comunidad.
-*   📸 **Evidencias Físicas**: Capacidad de adjuntar capturas, fotos del sospechoso comiendo la malta o memes graciosos como prueba irrefutable de la deuda.
-*   🔒 **Seguridad y "Regla de Oro"**: 
-    *   Cualquiera puede ver las deudas, pero **sólo el acreedor original (dueño)** que registró la deuda tiene la potestad de modificarla o marcarla como pagada (borrarla).
-    *   Cualquier intento de sabotaje por parte de terceros o deudores a través de peticiones HTTP forzadas es bloqueado con un error estricto de servidor **403 Forbidden**.
-*   🚨 **Reporte de Sospechosos**: Sección satírica de denuncias para solicitar "apoyo táctico" si el deudor te ha bloqueado o te esquiva en los pasillos.
-*   ⚡ **Estética Cyber-Neon**: Efectos de resplandor (glow) neón magenta y ciano al enfocar campos, tipografías modernas (`Orbitron` e `Inter`) y sombras interactivas.
+*   📁 **El Tablón** (`/tablon/`): Dashboard responsivo en tarjetas de cristal (glassmorphism).
+*   🍿 **Tres tipos de historias** con pestañas: **Chismes**, **Cuentas entre Panas** y **Deudas Serias**.
+*   📸 **Evidencias Físicas**: Adjunta capturas, fotos o memes como prueba de la deuda.
+*   🔒 **Regla de Oro**: Solo el acreedor original puede marcar como pagada o eliminar su deuda. Terceros reciben **403 Forbidden**.
+*   💳 **Pagos con Stripe**: Suscripción mensual/anual, webhooks, gestión de clientes.
+*   📣 **Compartir**: Botones de WhatsApp / X / Facebook y copiar enlace en cada historia.
+*   🔍 **SEO / OpenGraph**: Meta tags para que los enlaces compartidos se vean atractivos.
+*   🎨 **Estética Dark Premium**: Glassmorphism, gradientes, animaciones fluidas, tipografía Plus Jakarta Sans.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🛠️ Stack
 
 *   **Backend**: Django 5.0.6 (Python 3)
-*   **Base de Datos**: SQLite3 (Fresh y limpia)
-*   **Procesamiento de Imágenes**: Pillow 12.2.0
-*   **Frontend**: HTML5, Vanilla CSS3 (Custom `style.css`), Bootstrap 5.3.2 (Layout responsivo)
+*   **Base de Datos**: SQLite3 (dev) / PostgreSQL (prod)
+*   **Imágenes**: Pillow
+*   **Frontend**: HTML5, Custom CSS (style.css), Tailwind + DaisyUI (CDN)
+*   **Pagos**: Stripe
+*   **Servidor Prod**: gunicorn + whitenoise
 
 ---
 
 ## 🚀 Instalación y Uso Local
 
-Sigue estos sencillos pasos para levantar el entorno de desarrollo en tu computadora:
+```bash
+python -m venv .venv
+.\.venv\Scripts\activate        # Windows
+source .venv/bin/activate       # macOS/Linux
 
-### 1. Clonar el repositorio
-```bash
-git clone https://github.com/Jos3alvarado/Proyecto_final_adakademy.git
-cd Proyecto_final_adakademy
-```
-
-### 2. Crear y activar el entorno virtual
-En Windows:
-```bash
-python -m venv venv
-.\venv\Scripts\activate
-```
-En macOS/Linux:
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Instalar las dependencias
-```bash
 pip install -r requirements.txt
-```
 
-### 4. Realizar las migraciones
-```bash
+# 1. Configura tus claves (Stripe, secret key)
+cp .env.example .env            # luego edita .env con valores reales
+
+# 2. Migraciones + datos de ejemplo
 python manage.py migrate
-```
+python manage.py setup_categories   # crea las 12 categorías
+python manage.py seed_debts         # datos de prueba graciosos (opcional)
 
-### 5. (Opcional) Poblar con datos de prueba humorísticos
-Si deseas ver cómo luce la interfaz con registros de prueba precargados, puedes ejecutar nuestro comando personalizado:
-```bash
-python manage.py seed_debts
-```
-*Nota: Este comando creará 3 acreedores (`Jose`, `Pedro`, `Maria`) con sus respectivas deudas graciosas y capturas de evidencia generadas con Pillow.*
+# 3. Crea un superusuario (para /admin/)
+python manage.py createsuperuser
 
-### 6. Iniciar el servidor de desarrollo
-```bash
+# 4. Corre el servidor
 python manage.py runserver
 ```
 
-Visita `http://127.0.0.1:8000/` en tu navegador para ver la cartelera de deudores.
+Visita `http://127.0.0.1:8000/`.
+
+> **Nota:** el archivo `.env` está en `.gitignore` (nunca se sube a GitHub). Las variables también pueden definirse en el panel del host (Render/Railway) si no quieres usar archivo local.
+
+---
+
+## 💳 Configuración de Stripe (imprescindible para cobrar)
+
+1. Crea una cuenta en [stripe.com](https://stripe.com).
+2. **Developers → API keys**: copia la clave pública (`pk_test_...`) y secreta (`sk_test_...`) al `.env`.
+3. **Productos → Añadir precio** (tipo *Subscription*/Periódico):
+   - **Premium Mensual** → $9.99/mes
+   - **Premium Anual** → $99.99/año
+   Copia los IDs (`price_...`) al `.env` en `STRIPE_PRICE_ID_PREMIUM_MONTHLY` y `STRIPE_PRICE_ID_PREMIUM_YEARLY`.
+4. **Developers → Webhooks**: añade un endpoint apuntando a `https://TU-DOMINIO/stripe/webhook/` y suscríbete a:
+   - `checkout.session.completed`
+   - `invoice.payment_succeeded`
+   - `invoice.payment_failed`
+   Copia el **Signing secret** (`whsec_...`) al `.env`.
+5. Para pruebas usa la tarjeta de test de Stripe: `4242 4242 4242 4242`, cualquier fecha futura, CVC cualquiera.
+
+Variables de entorno usadas:
+
+| Variable | Descripción |
+|---|---|
+| `DJANGO_SECRET_KEY` | Clave secreta de Django |
+| `DJANGO_DEBUG` | `True` en dev, `False` en producción |
+| `DJANGO_ALLOWED_HOSTS` | Hosts permitidos separados por coma |
+| `STRIPE_PUBLIC_KEY` | Clave pública de Stripe |
+| `STRIPE_SECRET_KEY` | Clave secreta de Stripe |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret del webhook |
+| `STRIPE_PRICE_ID_PREMIUM_MONTHLY` | ID del precio mensual |
+| `STRIPE_PRICE_ID_PREMIUM_YEARLY` | ID del precio anual |
+
+---
+
+## 💰 Estrategia de Monetización (Freemium)
+
+| Plan | Precio | Incluye |
+|---|---|---|
+| **Gratis** | $0 | 3 publicaciones, chismes, evidencia con foto |
+| **Pro Mensual** | $9.99/mes | Publicaciones ilimitadas, todos los tipos, contenido premium |
+| **Pro Anual** | $99.99/año | Igual que Pro Mensual (2 meses gratis) |
+
+**Flujo de cobro:**
+1. Un usuario gratuito publica hasta 3 historias.
+2. Al intentar crear la 4ª se le redirige a `/precios/`.
+3. Desde `/precios/` elige plan y paga vía Stripe Checkout.
+4. El webhook/`payment_success` activa `subscription_type = premium` con fecha de expiración.
 
 ---
 
 ## 🧪 Pruebas Unitarias
-
-La aplicación cuenta con una suite completa de **8 pruebas unitarias** que validan la seguridad de la aplicación, el acceso al dashboard y los controles de privilegios:
 
 ```bash
 python manage.py test
@@ -85,6 +112,28 @@ python manage.py test
 
 ---
 
+## 🚀 Deploy (Activar la página en línea)
+
+La app está lista para **Render.com** o **Railway.app**. Ya incluye `Procfile`, `render.yaml`, `requirements.txt` con gunicorn + whitenoise.
+
+### Pasos con Render (seguir `render.yaml`):
+
+1. **Sube el proyecto a GitHub**.
+2. Crea cuenta en [render.com](https://render.com) → **New → Web Service** → conecta el repo.
+3. Render detectará `render.yaml` y usará la configuración (comando: `gunicorn myblog.wsgi`).
+4. Añade en **Environment** las variables del `.env` (todas las de la tabla superior, con `DJANGO_DEBUG=False` y `DJANGO_ALLOWED_HOSTS` = tu dominio).
+5. En **Deploy**, añade los comandos:
+   ```
+   python manage.py migrate
+   python manage.py setup_categories
+   python manage.py collectstatic --noinput
+   ```
+6. **PostgreSQL**: agrega un servicio de base de datos en Render y pon la URL en `DATABASE_URL` (opcional si quieres producción robusta).
+7. Configura el **webhook de Stripe** apuntando a tu dominio real (`https://TU-DOMINIO/stripe/webhook/`) y re-copía el nuevo signing secret a las variables del panel.
+8. **Recordatorio**: cuando pases de claves `test` a `live`, actualiza las claves y crea precios reales en Stripe.
+
+---
+
 ## ⚖️ Licencia
 
-Desarrollado con fines educativos e informales en el curso de **Adakademy**. ¡Prohibido comerse la malta del compañero sin pagársela! 🕊️
+Desarrollado con fines educativos en el curso de **Adakademy**. ¡Prohibido comerse la malta del compañero sin pagársela! 🕊️

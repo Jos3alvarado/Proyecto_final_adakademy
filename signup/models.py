@@ -1,3 +1,3 @@
 from django.db import models
 
-# Create your models here.
+# El perfil de usuario (UserProfile) vive en newspaper/models.py

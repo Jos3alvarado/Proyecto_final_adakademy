@@ -1,63 +1,95 @@
 {% extends "newspaper/_base.html" %}
 
-{% block title %}Cómo Funciona - Cuentas Claras{% endblock %}
+{% block title %}Como Funciona - Cuentas Claras{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-9">
-        <div class="fintech-card p-4 p-md-5">
-            
-            <div class="text-center mb-5 border-bottom pb-4" style="border-color: #f1f5f9 !important;">
-                <span class="display-4 d-block mb-2">💡</span>
-                <h1 class="fw-bold mb-1" style="color: var(--trust-navy); letter-spacing: -0.8px;">Acerca de Cuentas Claras</h1>
-                <p class="text-muted mt-2 mb-0" style="font-size: 1.05rem;">
-                    Una solución amigable para simplificar las finanzas compartidas y evitar la amnesia financiera.
-                </p>
+<div class="max-w-4xl mx-auto space-y-12">
+
+    <!-- Hero -->
+    <div class="text-center py-12 animate-fade-in-up">
+        <div class="text-6xl mb-4">&#128161;</div>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4" style="color: var(--text-primary); letter-spacing: -1px;">Cuentas Claras</h1>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+            La solucion amigable para simplificar las finanzas compartidas y evitar la amnesia financiera estudiantil.
+        </p>
+    </div>
+
+    <!-- Mission -->
+    <div class="glass-card-static p-8 md:p-12 animate-fade-in-up delay-1">
+        <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">Nuestra Mision</h2>
+        <p class="leading-relaxed text-lg" style="color: var(--text-secondary);">
+            Cuentas Claras nacio para solucionar las pequenas deudas diarias del ambito estudiantil de forma transparente y sin generar estres. Salir de clases y escuchar el clasico <em style="color: var(--accent-blue);">"te pago manana"</em> puede causar malentendidos incomodos. Esta herramienta digitaliza el registro de deudas asegurando que el dinero se administre con claridad y tranquilidad.
+        </p>
+    </div>
+
+    <!-- Values Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card text-center animate-fade-in-up delay-1">
+            <div class="text-4xl mb-4">&#9878;</div>
+            <h3 class="text-xl font-bold mb-2" style="color: var(--accent-blue);">Claridad</h3>
+            <p class="text-sm" style="color: var(--text-secondary);">Tanto el deudor como el acreedor pueden visualizar la cuenta en tiempo real.</p>
+        </div>
+        <div class="glass-card text-center animate-fade-in-up delay-2">
+            <div class="text-4xl mb-4">&#129309;</div>
+            <h3 class="text-xl font-bold mb-2" style="color: var(--accent-green);">Confianza</h3>
+            <p class="text-sm" style="color: var(--text-secondary);">La palabra o los archivos de evidencia soportan cada transaccion.</p>
+        </div>
+        <div class="glass-card text-center animate-fade-in-up delay-3">
+            <div class="text-4xl mb-4">&#129488;</div>
+            <h3 class="text-xl font-bold mb-2" style="color: var(--accent-violet);">Tranquilidad</h3>
+            <p class="text-sm" style="color: var(--text-secondary);">Gestiona tus cobros sin fricciones, sin presion y sin ansiedad.</p>
+        </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="glass-card-static p-8 md:p-12 animate-fade-in-up delay-2">
+        <h2 class="text-2xl font-bold mb-8 text-center" style="color: var(--text-primary);">Como Funciona en 3 Pasos</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center text-xl font-bold" style="background: var(--gradient-blue); color: white;">1</div>
+                <h4 class="font-bold mb-2" style="color: var(--text-primary);">Registra</h4>
+                <p class="text-sm" style="color: var(--text-secondary);">Crea una cuenta gratis y registra la deuda con nombre, contexto y evidencia.</p>
             </div>
-
-            <h3 class="fw-bold mb-3" style="color: var(--trust-navy); font-size: 1.3rem;">Nuestra Misión: Generar Transparencia y Confianza</h3>
-            <p class="text-muted mb-5" style="line-height: 1.8; font-size: 1.05rem;">
-                Cuentas Claras nació para solucionar las pequeñas deudas diarias del ámbito estudiantil de forma transparente y sin generar estrés. Salir de clases y escuchar el clásico <em>"te pago mañana"</em> puede causar malentendidos incómodos. Esta herramienta digitaliza el registro de deudas de manera compartida, asegurando que el dinero se administre con total claridad y tranquilidad mental para todas las partes.
-            </p>
-
-            <!-- Grid metrics/values -->
-            <div class="row g-4 mb-5">
-                <div class="col-md-4">
-                    <div class="p-4 rounded-4 text-center h-100 border" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
-                        <span class="fs-2 d-block mb-2">⚖️</span>
-                        <h4 class="fw-bold mb-1" style="color: var(--electric-blue); font-size: 1.25rem;">Claridad</h4>
-                        <p class="small text-muted mb-0">Tanto el deudor como el acreedor pueden visualizar la cuenta en tiempo real.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-4 rounded-4 text-center h-100 border" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
-                        <span class="fs-2 d-block mb-2">🤝</span>
-                        <h4 class="fw-bold mb-1" style="color: var(--paid-green); font-size: 1.25rem;">Confianza</h4>
-                        <p class="small text-muted mb-0">La palabra de honor o los archivos de evidencia soportan cada transacción.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-4 rounded-4 text-center h-100 border" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
-                        <span class="fs-2 d-block mb-2">🧘</span>
-                        <h4 class="fw-bold mb-1" style="color: var(--violet-accent); font-size: 1.25rem;">Tranquilidad</h4>
-                        <p class="small text-muted mb-0">Gestiona tus cobros sin fricciones, sin presión incómoda y sin ansiedad.</p>
-                    </div>
-                </div>
+            <div class="text-center">
+                <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center text-xl font-bold" style="background: var(--gradient-green); color: white;">2</div>
+                <h4 class="font-bold mb-2" style="color: var(--text-primary);">Comparte</h4>
+                <p class="text-sm" style="color: var(--text-secondary);">El deudor puede ver la deuda en el tablon publico. Sin excusas.</p>
             </div>
-
-            <h3 class="fw-bold mb-3" style="color: var(--trust-navy); font-size: 1.3rem;">Los 3 Mandamientos de Cuentas Claras</h3>
-            <ol class="text-muted mb-5" style="line-height: 2; font-size: 1.05rem;">
-                <li><strong>Honestidad del registro:</strong> Todas las deudas declaradas deben ser 100% verídicas.</li>
-                <li><strong>Soberanía del acreedor:</strong> Solo quien prestó el dinero puede perdonar o marcar la deuda como pagada. El deudor no puede auto-eliminarse.</li>
-                <li><strong>Comunicación clara:</strong> Utiliza el chisme o contexto de forma respetuosa pero divertida para facilitar el cobro.</li>
-            </ol>
-
-            <div class="text-center mt-4">
-                <a href="{% url 'article-list' %}" class="btn btn-fintech-primary text-decoration-none">
-                    Acceder al Tablón Principal
-                </a>
+            <div class="text-center">
+                <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center text-xl font-bold" style="background: var(--gradient-fire); color: white;">3</div>
+                <h4 class="font-bold mb-2" style="color: var(--text-primary);">Cobra</h4>
+                <p class="text-sm" style="color: var(--text-secondary);">Cuando pague, marcala como saldada y archivala en tu historial.</p>
             </div>
         </div>
+    </div>
+
+    <!-- Mandamentos -->
+    <div class="glass-card-static p-8 md:p-12 animate-fade-in-up delay-3">
+        <h2 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">Los 3 Mandamientos</h2>
+        <ol class="space-y-4" style="color: var(--text-secondary);">
+            <li class="flex gap-4">
+                <span class="text-2xl font-bold" style="color: var(--accent-blue);">01</span>
+                <div>
+                    <strong style="color: var(--text-primary);">Honestidad del registro:</strong> Todas las deudas declaradas deben ser 100% veridicas.
+                </div>
+            </li>
+            <li class="flex gap-4">
+                <span class="text-2xl font-bold" style="color: var(--accent-green);">02</span>
+                <div>
+                    <strong style="color: var(--text-primary);">Soberania del acreedor:</strong> Solo quien presto puede marcar la deuda como pagada.
+                </div>
+            </li>
+            <li class="flex gap-4">
+                <span class="text-2xl font-bold" style="color: var(--accent-orange);">03</span>
+                <div>
+                    <strong style="color: var(--text-primary);">Comunicacion clara:</strong> Usa el contexto de forma respetuosa pero divertida para facilitar el cobro.
+                </div>
+            </li>
+        </ol>
+    </div>
+
+    <div class="text-center py-8">
+        <a href="{% url 'article-list' %}" class="btn-glow btn-lg">Acceder al Tablon</a>
     </div>
 </div>
 {% endblock %}

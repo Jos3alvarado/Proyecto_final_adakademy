@@ -1,0 +1,193 @@
+{% extends "newspaper/_base.html" %}
+
+{% block title %}Cuentas Claras - Erradicando la Amnesia Financiera{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="Nunca mas pierdas un cobro pendiente entre amigos. Registra deudas, comparte el tablon y cobra sin conflictos.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Cuentas Claras">
+    <meta property="og:title" content="Cuentas Claras | Nunca mas pierdas un cobro pendiente">
+    <meta property="og:description" content="Registra deudas entre amigos y companeros de forma transparente, divertida y sin conflictos. 100% gratis.">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Cuentas Claras | Nunca mas pierdas un cobro pendiente">
+    <meta name="twitter:description" content="Registra deudas entre amigos y companeros de forma transparente, divertida y sin conflictos.">
+{% endblock %}
+
+{% block content %}
+<div class="relative">
+
+    <!-- Hero Section -->
+    <div class="text-center py-16 md:py-24 relative">
+        <div class="hero-glow" style="background: var(--accent-blue); top: -200px; left: 50%; transform: translateX(-50%);"></div>
+
+        <div class="animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-semibold" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--accent-blue);">
+                <span>&#9889;</span> Erradicando la amnesia financiera estudiantil
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight" style="letter-spacing: -2px; color: var(--text-primary);">
+                Nunca mas pierdas<br>
+                <span style="background: var(--gradient-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">un cobro pendiente</span>
+            </h1>
+
+            <p class="text-lg md:text-xl max-w-2xl mx-auto mb-10" style="color: var(--text-secondary);">
+                Registra deudas entre amigos, companeros de universidad o colegas de forma transparente, divertida y sin conflictos.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'register' %}" class="btn-glow btn-lg">Comenzar Gratis &#8594;</a>
+                <a href="{% url 'about' %}" class="btn-glass btn-lg">Ver Como Funciona</a>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-3 gap-6 max-w-xl mx-auto mt-16 animate-fade-in-up delay-2">
+            <div>
+                <div class="text-3xl font-extrabold" style="color: var(--accent-blue);">100%</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">GRATIS</div>
+            </div>
+            <div>
+                <div class="text-3xl font-extrabold" style="color: var(--accent-green);">0</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">CONFLICTOS</div>
+            </div>
+            <div>
+                <div class="text-3xl font-extrabold" style="color: var(--accent-orange);">24/7</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">DISPONIBLE</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="py-16">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-4" style="color: var(--text-primary); letter-spacing: -1px;">3 Pasos Simples</h2>
+        <p class="text-center mb-12" style="color: var(--text-muted);">Sin complicaciones. Sin apps complicadas. Solo resultados.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card text-center animate-fade-in-up delay-1">
+                <div class="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-2xl" style="background: var(--gradient-blue);">&#128221;</div>
+                <h3 class="text-xl font-bold mb-2" style="color: var(--text-primary);">1. Registra la Deuda</h3>
+                <p class="text-sm" style="color: var(--text-secondary);">Escribe quien te debe, cuanto, y porque. Anexa una foto como evidencia si quieres.</p>
+            </div>
+            <div class="glass-card text-center animate-fade-in-up delay-2">
+                <div class="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-2xl" style="background: var(--gradient-green);">&#128279;</div>
+                <h3 class="text-xl font-bold mb-2" style="color: var(--text-primary);">2. Comparte el Tablon</h3>
+                <p class="text-sm" style="color: var(--text-secondary);">El deudor puede ver su deuda en el tablon publico. Sin excusas posibles.</p>
+            </div>
+            <div class="glass-card text-center animate-fade-in-up delay-3">
+                <div class="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-2xl" style="background: var(--gradient-fire);">&#128176;</div>
+                <h3 class="text-xl font-bold mb-2" style="color: var(--text-primary);">3. Cobra y Archiva</h3>
+                <p class="text-sm" style="color: var(--text-secondary);">Cuando pague, marca la deuda como pagada y queda en tu historial.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="py-16">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12" style="color: var(--text-primary); letter-spacing: -1px;">Por que Cuentas Claras?</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card flex gap-4 animate-fade-in-up delay-1">
+                <div class="text-3xl">&#128274;</div>
+                <div>
+                    <h4 class="font-bold mb-1" style="color: var(--text-primary);">Solo tu puedes cobrar</h4>
+                    <p class="text-sm" style="color: var(--text-secondary);">Nadie puede borrar o marcar como pagada una deuda que no es suya. Seguridad total.</p>
+                </div>
+            </div>
+            <div class="glass-card flex gap-4 animate-fade-in-up delay-2">
+                <div class="text-3xl">&#128248;</div>
+                <div>
+                    <h4 class="font-bold mb-1" style="color: var(--text-primary);">Evidencia adjunta</h4>
+                    <p class="text-sm" style="color: var(--text-secondary);">Sube fotos, capturas de chat o memes como prueba irrefutable de la deuda.</p>
+                </div>
+            </div>
+            <div class="glass-card flex gap-4 animate-fade-in-up delay-3">
+                <div class="text-3xl">&#128269;</div>
+                <div>
+                    <h4 class="font-bold mb-1" style="color: var(--text-primary);">Busqueda instantanea</h4>
+                    <p class="text-sm" style="color: var(--text-secondary);">Encuentra cualquier deuda al instante por nombre, contenido o palabra clave.</p>
+                </div>
+            </div>
+            <div class="glass-card flex gap-4 animate-fade-in-up delay-4">
+                <div class="text-3xl">&#128202;</div>
+                <div>
+                    <h4 class="font-bold mb-1" style="color: var(--text-primary);">Dashboard con estadisticas</h4>
+                    <p class="text-sm" style="color: var(--text-secondary);">Visualiza cuantas deudas tienes activas, cuantas has cobrado, y tu nivel de salud financiera.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="py-16" id="precios">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-4" style="color: var(--text-primary); letter-spacing: -1px;">Planes</h2>
+        <p class="text-center mb-12" style="color: var(--text-muted);">Empieza gratis. Desbloquea mas funciones cuando quieras.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+            <!-- Free -->
+            <div class="pricing-card animate-fade-in-up delay-1">
+                <div class="mb-6">
+                    <span class="badge-glass badge-blue mb-3 inline-flex">Basico</span>
+                    <div class="price-tag" style="color: var(--text-primary);">$0</div>
+                    <p class="text-sm mt-1" style="color: var(--text-muted);">Para siempre</p>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> 3 publicaciones
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> Historias y chismes
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> Evidencia con foto
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-muted);">
+                        <span>&#10007;</span> Publicaciones ilimitadas
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-muted);">
+                        <span>&#10007;</span> Contenido premium
+                    </li>
+                </ul>
+                <a href="{% url 'register' %}" class="btn-glass w-full text-center block py-3">Empezar Gratis</a>
+            </div>
+
+            <!-- Pro -->
+            <div class="pricing-card featured animate-fade-in-up delay-2">
+                <div class="mb-6">
+                    <span class="badge-glass badge-violet mb-3 inline-flex">&#9889; Popular</span>
+                    <div class="price-tag" style="color: var(--accent-blue);">$9.99<span class="text-lg font-normal" style="color: var(--text-muted);">/mes</span></div>
+                    <p class="text-sm mt-1" style="color: var(--text-muted);">Publica sin limites</p>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> Publicaciones ilimitadas
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> Todos los tipos de historias
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> Acceso a contenido premium
+                    </li>
+                    <li class="flex items-center gap-2 text-sm" style="color: var(--text-secondary);">
+                        <span style="color: var(--accent-green);">&#10003;</span> Soporte prioritario
+                    </li>
+                </ul>
+                <a href="{% url 'pricing' %}" class="btn-glow w-full text-center block py-3">Elegir Pro</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Final -->
+    <div class="py-16 text-center">
+        <div class="glass-card-static p-12 md:p-16 relative overflow-hidden">
+            <div class="hero-glow" style="background: var(--accent-blue); top: -100px; right: -100px; width: 300px; height: 300px;"></div>
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-4" style="color: var(--text-primary); letter-spacing: -1px;">Listo para dejar de perder dinero?</h2>
+            <p class="mb-8 text-lg" style="color: var(--text-secondary);">Unete a los estudiantes que ya usan Cuentas Claras para no olvidar sus cobros.</p>
+            <a href="{% url 'register' %}" class="btn-glow btn-lg">Crear Cuenta Gratis &#8594;</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

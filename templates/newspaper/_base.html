@@ -1,100 +1,130 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Cuentas Claras - Simplificando tus finanzas{% endblock %}</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Clean Minimalist Fintech CSS -->
+    <title>{% block title %}Cuentas Claras{% endblock %}</title>
+
+    {% block meta %}
+    <meta name="description" content="Cuentas Claras: registra y cobra las deudas entre amigos, companeros de universidad o colegas de forma transparente, divertida y sin conflictos.">
+    <meta name="keywords" content="deudas, cobrar, prestamos, amigos, universidad, chismes, cuentas claras">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Cuentas Claras">
+    <meta property="og:title" content="Cuentas Claras | Erradicando la Amnesia Financiera">
+    <meta property="og:description" content="Nunca mas pierdas un cobro pendiente entre amigos. Registra deudas, comparte el tablon y cobra sin conflictos.">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Cuentas Claras | Erradicando la Amnesia Financiera">
+    <meta name="twitter:description" content="Registra deudas entre amigos y companeros de forma transparente, divertida y sin conflictos.">
+    {% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'jakarta': ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        surface: {
+                            '0': '#0a0a0f',
+                            '1': '#12121a',
+                            '2': '#1a1a25',
+                            '3': '#222230',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="font-jakarta">
 
-    <!-- Floating Minimalist Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light navbar-fintech sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'article-list' %}">
-                🎯 Cuentas<span>Claras</span>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item">
-                        <a class="nav-link-fintech px-3 {% if request.resolver_match.url_name == 'article-list' %}active{% endif %}" href="{% url 'article-list' %}">Tablón Principal</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link-fintech px-3 {% if request.resolver_match.url_name == 'article-create' %}active{% endif %}" href="{% url 'article-create' %}">Registrar Cobro</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link-fintech px-3 {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">Cómo Funciona</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link-fintech px-3 {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Apoyo de Cobro</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
+    <!-- Navbar -->
+    <nav class="navbar-glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'landing' %}" class="nav-brand flex items-center gap-2">
+                    <span class="text-2xl">&#x1f3af;</span>
+                    <span>CuentasClaras</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-1">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'article-list' %}active{% endif %}" href="{% url 'article-list' %}">Tablon</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">Como Funciona</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'pricing' %}active{% endif %}" href="{% url 'pricing' %}">Precios</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Soporte</a>
+                </div>
+
+                <div class="flex items-center gap-3">
                     {% if user.is_authenticated %}
-                        <span class="text-secondary me-3 d-none d-md-inline" style="font-size: 0.9rem; font-weight: 500;">
-                            Acreedor: <strong style="color: var(--trust-navy);">{{ user.username }}</strong>
+                        {% if user.profile.has_premium_access %}
+                            <span class="badge-glass badge-violet hidden sm:inline-flex">&#11088; Pro</span>
+                        {% else %}
+                            <a href="{% url 'pricing' %}" class="btn-glow btn-sm hidden sm:inline-block" style="background: var(--gradient-green); box-shadow: 0 4px 15px var(--accent-green-glow);">&#11088; Mejorar Pro</a>
+                        {% endif %}
+                        <span class="hidden lg:inline text-sm" style="color: var(--text-secondary);">
+                            <span style="color: var(--accent-green);">&#9679;</span> {{ user.username }}
                         </span>
-                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                        <form action="{% url 'logout' %}" method="post" class="inline">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-fintech-outline py-2 px-4" style="font-size: 0.9rem; border-radius: 10px;">Cerrar Sesión</button>
+                            <button type="submit" class="btn-glass btn-sm">Salir</button>
                         </form>
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-fintech-outline py-2 px-4 me-2" style="font-size: 0.9rem; border-radius: 10px;">Ingresar</a>
-                        <a href="{% url 'register' %}" class="btn btn-fintech-primary py-2 px-4" style="font-size: 0.9rem; border-radius: 10px;">Crear Cuenta</a>
+                        <a href="{% url 'login' %}" class="btn-glass btn-sm">Entrar</a>
+                        <a href="{% url 'register' %}" class="btn-glow btn-sm">Crear Cuenta</a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Container -->
-    <main class="container my-5">
-        <!-- Success and Error Messages as Elegant Callout Blocks -->
-        {% if messages %}
-            <div class="row justify-content-center mb-4">
-                <div class="col-md-10">
-                    {% for message in messages %}
-                        <div class="alert alert-fintech {% if message.tags == 'success' %}alert-fintech-success{% elif message.tags == 'error' %}alert-fintech-danger{% else %}alert-fintech-warning{% endif %} alert-dismissible fade show border-0 py-3 px-4" role="alert">
-                            <div class="d-flex align-items-center">
-                                <span class="fs-4 me-3">
-                                    {% if message.tags == 'success' %}✨{% elif message.tags == 'error' %}🔒{% else %}ℹ️{% endif %}
-                                </span>
-                                <div style="font-size: 0.98rem; font-weight: 500;">
-                                    {{ message }}
-                                </div>
-                            </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="font-size: 0.8rem;"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
+    <!-- Messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        {% for message in messages %}
+        <div class="alert-glass {% if message.tags == 'success' %}alert-glass-success{% elif message.tags == 'error' %}alert-glass-error{% elif message.tags == 'warning' %}alert-glass-warning{% else %}alert-glass-info{% endif %} animate-fade-in-up">
+            <span class="text-lg">
+                {% if message.tags == 'success' %}&#10003;{% elif message.tags == 'error' %}&#10007;{% elif message.tags == 'warning' %}&#9888;{% else %}&#8505;{% endif %}
+            </span>
+            <span class="text-sm" style="color: var(--text-primary);">{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
+    <!-- Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Professional Fintech Footer -->
-    <footer class="py-4 mt-auto">
-        <div class="container text-center">
-            <p class="mb-1 fw-semibold" style="color: var(--trust-navy);">
-                🎯 Cuentas Claras &copy; 2026 - Control inteligente y amigable de finanzas compartidas.
-            </p>
-            <small style="opacity: 0.8;">
-                Transparencia · Seguridad · Confianza. Erradicando la amnesia financiera estudiantil de forma calmada.
-            </small>
+    <!-- Footer -->
+    <footer class="footer-glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">&#x1f3af;</span>
+                    <span class="font-bold" style="color: var(--text-secondary);">Cuentas Claras</span>
+                </div>
+                <p class="text-center text-sm" style="color: var(--text-muted);">
+                    Erradicando la amnesia financiera estudiantil &middot; Transparencia &middot; Confianza
+                </p>
+                <p class="text-xs" style="color: var(--text-muted);">&copy; 2026</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
