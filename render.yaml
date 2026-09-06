@@ -1,9 +1,18 @@
+databases:
+  - name: cuentas-claras-db
+    plan: free
+    region: ohio
+
 services:
   - type: web
     name: cuentas-claras
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput"
+    plan: free
+    region: ohio
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py setup_categories && python manage.py collectstatic --noinput"
     startCommand: "gunicorn myblog.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    healthCheckPath: /tablon/
+    autoDeploy: true
     envVars:
       - key: DJANGO_SECRET_KEY
         generateValue: true
@@ -13,3 +22,19 @@ services:
         value: "*.onrender.com"
       - key: PYTHON_VERSION
         value: "3.11.9"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cuentas-claras-db
+          property: connectionString
+      # Stripe — reemplaza con tus claves reales de panel.stripe.com
+      # (en modo LIVE usa pk_live/sk_live y los precios reales price_...)
+      - key: STRIPE_PUBLIC_KEY
+        value: "pk_test_PON_AQUI_TU_CLAVE"
+      - key: STRIPE_SECRET_KEY
+        value: "sk_test_PON_AQUI_TU_CLAVE"
+      - key: STRIPE_WEBHOOK_SECRET
+        value: "whsec_PON_AQUI_TU_WEBHOOK"
+      - key: STRIPE_PRICE_ID_PREMIUM_MONTHLY
+        value: "price_PON_AQUI_TU_MENSUAL"
+      - key: STRIPE_PRICE_ID_PREMIUM_YEARLY
+        value: "price_PON_AQUI_TU_ANUAL"

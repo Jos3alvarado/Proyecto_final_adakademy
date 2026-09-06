@@ -80,6 +80,7 @@ Variables de entorno usadas:
 | `DJANGO_SECRET_KEY` | Clave secreta de Django |
 | `DJANGO_DEBUG` | `True` en dev, `False` en producción |
 | `DJANGO_ALLOWED_HOSTS` | Hosts permitidos separados por coma |
+| `DATABASE_URL` | URL de PostgreSQL (Render la provee; local se usa SQLite) |
 | `STRIPE_PUBLIC_KEY` | Clave pública de Stripe |
 | `STRIPE_SECRET_KEY` | Clave secreta de Stripe |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret del webhook |
@@ -118,19 +119,25 @@ La app está lista para **Render.com** o **Railway.app**. Ya incluye `Procfile`,
 
 ### Pasos con Render (seguir `render.yaml`):
 
-1. **Sube el proyecto a GitHub**.
-2. Crea cuenta en [render.com](https://render.com) → **New → Web Service** → conecta el repo.
-3. Render detectará `render.yaml` y usará la configuración (comando: `gunicorn myblog.wsgi`).
-4. Añade en **Environment** las variables del `.env` (todas las de la tabla superior, con `DJANGO_DEBUG=False` y `DJANGO_ALLOWED_HOSTS` = tu dominio).
-5. En **Deploy**, añade los comandos:
+1. **Sube el proyecto a GitHub** (ya incluye `render.yaml`).
+2. Crea cuenta en [render.com](https://render.com) → **New → Blueprint** (o *New → Web Service* conectando el repo).
+3. Render detectará `render.yaml` y creará automáticamente: el **Web Service** (`cuentas-claras`) y la **base de datos PostgreSQL** (`cuentas-claras-db`) gratis.
+4. Render ejecuta el build:
    ```
+   pip install -r requirements.txt
    python manage.py migrate
    python manage.py setup_categories
    python manage.py collectstatic --noinput
    ```
-6. **PostgreSQL**: agrega un servicio de base de datos en Render y pon la URL en `DATABASE_URL` (opcional si quieres producción robusta).
-7. Configura el **webhook de Stripe** apuntando a tu dominio real (`https://TU-DOMINIO/stripe/webhook/`) y re-copía el nuevo signing secret a las variables del panel.
-8. **Recordatorio**: cuando pases de claves `test` a `live`, actualiza las claves y crea precios reales en Stripe.
+5. **Reemplaza los placeholders de Stripe** en las variables del panel (Environment):
+   `STRIPE_PUBLIC_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_PREMIUM_MONTHLY`, `STRIPE_PRICE_ID_PREMIUM_YEARLY`.
+6. Espera a que `Deploy` muestre `Live`. Tendrás una URL tipo `https://cuentas-claras.onrender.com`.
+7. Ve a `DJANGO_ALLOWED_HOSTS` y añade tu dominio si usas uno propio.
+8. Crea el superusuario/admin con el shell de Render o localmente (ver abajo).
+9. **Webhook de Stripe**: crea el webhook en Stripe apuntando a `https://TU-DOMINIO/stripe/webhook/` con los eventos indicados arriba, y copia el nuevo `whsec_...` al panel.
+10. **Modo LIVE**: cuando estés listo para cobrar de verdad, activa las claves *live* en Stripe y repite los pasos 5 y 9 con los valores live.
+
+> **Importante**: el plan Free de Render pausa los servicios tras 15 min de inactividad y tarda unos segundos en volver al recibir el primer request. Para uso continuo usa el plan Starter (~$7/mes) o un host como Railway.
 
 ---
 
